@@ -2,64 +2,83 @@
 
 ## 项目简介
 
-本项目围绕 `true.csv` 与 `fake.csv` 构建虚假新闻二分类实验。流程包括数据读取、标签构造、全局随机洗牌、数据质量检查、文体特征提取、文本清洗、TF-IDF 向量化、特征拼接、逻辑回归与校准 LinearSVC 模型训练，以及分类报告、混淆矩阵和 ROC 曲线输出。
+本项目围绕虚假新闻二分类实验展开。流程包括数据读取、标签构造、全局随机洗牌、数据质量检查、文体特征提取、文本清洗、TF-IDF 向量化、特征拼接、逻辑回归与校准 LinearSVC 模型训练，以及分类报告、混淆矩阵和 ROC 曲线输出。
+
+## 数据来源
+
+由于数据集文件体积较大，本仓库不直接包含原始 CSV 文件。请通过以下链接下载数据并放入 `data/` 目录下：
+
+* **数据集名称**：Fake News Detection
+* **下载地址**：[Kaggle - Fake News Detection](https://www.kaggle.com/datasets/bhavikjikadara/fake-news-detection)
+* **文件要求**：下载后请确保包含 `true.csv`（真实新闻）与 `fake.csv`（虚假新闻）。
+
+## 实验环境与结果摘要
+
+> **环境声明**：本实验基于 **Python 3.12.6**，核心依赖为 **Pandas 2.2.3**、**NumPy 2.1.3**、**Scikit-learn 1.6.1**、**NLTK 3.9.1** 与 **Seaborn 0.13.2**。
+
+本研究结合 TF-IDF 内容特征与文体风格特征（大写占比、感叹号频率）进行建模。实验显示：
+
+* **逻辑回归 (Logistic Regression)**：准确率为 **0.9852**。
+* **校准 LinearSVC**：准确率为 **0.9909**。
 
 ## 文件说明
 
-- `fake_news_detection_analysis.ipynb`：主实验 notebook，已加入注释和代码解释。
-- `run_fake_news_detection.py`：一键执行脚本，适合直接在终端运行并生成全部结果文件。
-- `requirements.txt`：依赖清单，已补齐版本号。
-
-- `true.csv`：真实新闻数据。
-- `fake.csv`：虚假新闻数据。
-- `2400016608_陈湘媛_虚假新闻检测任务.docx`：最终报告文档。
+* `fake_news_detection_analysis.ipynb`：主实验 Notebook，包含详细的代码解释与可视化分析。
+* `run_fake_news_detection.py`：一键执行脚本，适合直接在终端运行。
+* `requirements.txt`：项目依赖清单。
+* `2400016608_陈湘媛_虚假新闻检测任务.docx`：最终报告文档。
 
 ## 推荐目录结构
 
-请将下列文件放在同一目录下：
+在运行代码前，请手动创建 `data/` 文件夹并存放数据文件：
 
 ```text
-案例二/
+.
 ├── data/
-    ├── true.csv
-    ├── fake.csv
+│   ├── true.csv                 # 需从 Kaggle 下载
+│   └── fake.csv                 # 需从 Kaggle 下载
 ├── fake_news_detection_analysis.ipynb
 ├── run_fake_news_detection.py
 ├── requirements.txt
 ├── README.md
 └── 2400016608_陈湘媛_虚假新闻检测任务.docx
+
 ```
 
-## 一键运行步骤
+## 运行步骤
 
-在终端执行：
+### 1. 环境准备
+
+确保已安装所需的 Python 包：
 
 ```bash
-cd /Users/sylviachan/Desktop/案例二
 python3 -m pip install -r requirements.txt
-python3 run_fake_news_detection.py
+
 ```
 
-运行完成后，脚本会在 `outputs/fake_news_detection/` 中生成数据质量表、分类报告、模型指标表和全部图表。
+### 2. 执行脚本
 
-## Notebook 运行方式
+在项目根目录下运行，脚本会自动读取 `data/` 中的文件：
 
-如需逐步查看代码逻辑，可打开 `fake_news_detection_analysis.ipynb`，从上到下依次运行所有单元。Notebook 已改为相对路径读取数据，因此 `true.csv` 和 `fake.csv` 必须与 notebook 位于同一目录。
+```bash
+python3 run_fake_news_detection.py
 
-## 主要结果
+```
 
-代码运行结果显示，合并数据集共有 `44898` 条新闻样本，各主要字段缺失值为 `0`，按 `title` 与 `text` 完全相同口径统计的重复样本数为 `5793` 条。逻辑回归测试准确率为 `0.9852`，校准 LinearSVC 测试准确率为 `0.9909`。
+### 3. Notebook 运行
+
+如需逐步查看逻辑，可使用 Jupyter 打开 `fake_news_detection_analysis.ipynb`。代码已配置为相对路径读取，只要确保数据存放在 `./data/` 即可正常运行。
 
 ## 输出文件
 
-主要输出包括：
+运行完成后，结果将保存在 `outputs/fake_news_detection/` 目录下：
 
-- `outputs/fake_news_detection/data_quality_summary.csv`
-- `outputs/fake_news_detection/model_metrics_summary.csv`
-- `outputs/fake_news_detection/logistic_regression_classification_report.txt`
-- `outputs/fake_news_detection/calibrated_linearsvc_classification_report.txt`
-- `outputs/fake_news_detection/target_distribution.png`
-- `outputs/fake_news_detection/word_count_kde.png`
-- `outputs/fake_news_detection/confusion_matrix_logistic_regression.png`
-- `outputs/fake_news_detection/confusion_matrix_calibrated_linearsvc.png`
-- `outputs/fake_news_detection/roc_curve_comparison.png`
+* **统计表**：数据质量统计 (`data_quality_summary.csv`)、模型指标汇总。
+* **报告**：两种模型的详细分类报告 (`.txt`)。
+* **图表**：标签分布图、单词长度 KDE 图、混淆矩阵及 ROC 曲线对比图。
+
+## 关键技术点
+
+* **防止特征泄露**：使用正则匹配剔除文本中的 Reuters 等机构前缀。
+* **特征融合**：将 5000 维 TF-IDF 矩阵与文体统计特征进行水平拼接。
+* **随机性控制**：统一使用 `RANDOM_STATE = 42` 以保证实验可复现。
